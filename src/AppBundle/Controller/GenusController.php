@@ -29,6 +29,16 @@ class GenusController extends Controller
     }
 
     /**
+     * @Route("/genus")
+     */
+    public function listAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $genuses = $em->getRepository('AppBundle:Genus')->findAll();
+        dump($genuses);die;
+    }
+
+    /**
      * @Route("/genus/{genusName}")
      */
     public function showAction($genusName)
