@@ -15,22 +15,32 @@ class Genus
      * @ORM\Column(type="integer")
      */
     private $id;
+
     /**
      * @ORM\Column(type="string")
      */
     private $name;
+
     /**
      * @ORM\Column(type="string")
      */
     private $subFamily;
+
     /**
      * @ORM\Column(type="integer")
      */
     private $speciesCount;
+
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $funFact;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPublished = true;
+
     /**
      * @return mixed
      */
@@ -93,6 +103,14 @@ class Genus
     public function setFunFact($funFact)
     {
         $this->funFact = $funFact;
+    }
+
+    /**
+     * @param mixed $isPublished
+     */
+    public function setIsPublished($isPublished)
+    {
+        $this->isPublished = $isPublished;
     }
 
     public function getUpdatedAt()
