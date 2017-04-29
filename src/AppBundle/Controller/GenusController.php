@@ -64,10 +64,8 @@ class GenusController extends Controller
         }
         else
         {
-            $recentNotes = $genus->getNotes()
-                ->filter(function (GenusNote $note){
-                    return $note->getCreatedAt() > new \DateTime('-3 months');
-                });
+            $recentNotes = $em->getRepository('AppBundle:GenusNote')
+                ->findAllRecentNotesForGenus($genus);
         }
 
 //        $cache = $this->get('doctrine_cache.providers.my_markdown_cache');
