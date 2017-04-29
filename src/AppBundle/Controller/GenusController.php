@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Genus;
 use AppBundle\Entity\GenusNote;
+use AppBundle\Service\MarkdownTransformer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -68,6 +69,9 @@ class GenusController extends Controller
                 ->findAllRecentNotesForGenus($genus);
         }
 
+        $markdownParser = new MarkdownTransformer();
+        $funFact = $markdownParser->parse($genus->getFunFact());
+
 //        $cache = $this->get('doctrine_cache.providers.my_markdown_cache');
 //        $key = md5($funFact);
 //        if($cache->contains($key))
@@ -82,7 +86,8 @@ class GenusController extends Controller
 //        }
         return $this->render('genus/show.html.twig', [
             'genus' => $genus,
-            'recentNoteCount' => count($recentNotes)
+            'recentNoteCount' => count($recentNotes),
+            'funFact' => $funFact
         ]);
     }
 
