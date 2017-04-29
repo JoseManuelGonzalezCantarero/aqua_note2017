@@ -62,6 +62,13 @@ class GenusController extends Controller
         {
             throw $this->createNotFoundException('genus not found');
         }
+        else
+        {
+            $recentNotes = $genus->getNotes()
+                ->filter(function (GenusNote $note){
+                    return $note->getCreatedAt() > new \DateTime('-3 months');
+                });
+        }
 
 //        $cache = $this->get('doctrine_cache.providers.my_markdown_cache');
 //        $key = md5($funFact);
@@ -76,7 +83,8 @@ class GenusController extends Controller
 //            $cache->save($key, $funFact);
 //        }
         return $this->render('genus/show.html.twig', [
-            'genus' => $genus
+            'genus' => $genus,
+            'recentNoteCount' => count($recentNotes)
         ]);
     }
 
