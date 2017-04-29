@@ -33,6 +33,11 @@ class GenusNote
     private $createdAt;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Genus")
+     */
+    private $genus;
+
+    /**
      * @return mixed
      */
     public function getUsername()
