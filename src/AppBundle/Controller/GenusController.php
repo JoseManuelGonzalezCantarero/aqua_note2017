@@ -69,7 +69,7 @@ class GenusController extends Controller
                 ->findAllRecentNotesForGenus($genus);
         }
 
-        $markdownParser = new MarkdownTransformer();
+        $markdownParser = new MarkdownTransformer($this->get('markdown.parser'));
         $funFact = $markdownParser->parse($genus->getFunFact());
 
 //        $cache = $this->get('doctrine_cache.providers.my_markdown_cache');
