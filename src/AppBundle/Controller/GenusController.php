@@ -72,18 +72,6 @@ class GenusController extends Controller
         $markdownParser = $this->get('app.markdown_transformer');
         $funFact = $markdownParser->parse($genus->getFunFact());
 
-//        $cache = $this->get('doctrine_cache.providers.my_markdown_cache');
-//        $key = md5($funFact);
-//        if($cache->contains($key))
-//        {
-//            $funFact = $cache->fetch($key);
-//        }
-//        else
-//        {
-//            sleep(1);
-//            $funFact = $this->get('markdown.parser')->transform($funFact);
-//            $cache->save($key, $funFact);
-//        }
         return $this->render('genus/show.html.twig', [
             'genus' => $genus,
             'recentNoteCount' => count($recentNotes),
