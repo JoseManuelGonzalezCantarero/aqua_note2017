@@ -11,4 +11,5 @@ services:
         class: AppBundle\Twig\MarkdownExtension
         tags:
             - { name: twig.extension }
-        arguments: ['@app.markdown_transformer']
+        #arguments: ['@app.markdown_transformer']
+        autowire: true
