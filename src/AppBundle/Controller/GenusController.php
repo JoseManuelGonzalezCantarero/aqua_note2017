@@ -23,16 +23,16 @@ class GenusController extends Controller
         $genus->setSubFamily('Octopodinae');
         $genus->setSpeciesCount(rand(100, 99999));
 
-        $note = new GenusNote();
-        $note->setUsername('AquaWeaver');
-        $note->setUserAvatarFilename('ryan.jpeg');
-        $note->setNote('I counted 8 legs... as they wrapped around me');
-        $note->setCreatedAt(new \DateTime('-1 month'));
-        $note->setGenus($genus);
+        $genusNote = new GenusNote();
+        $genusNote->setUsername('AquaWeaver');
+        $genusNote->setUserAvatarFilename('ryan.jpeg');
+        $genusNote->setNote('I counted 8 legs... as they wrapped around me');
+        $genusNote->setCreatedAt(new \DateTime('-1 month'));
+        $genusNote->setGenus($genus);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($genus);
-        $em->persist($note);
+        $em->persist($genusNote);
         $em->flush();
 
         return new Response('<html><body>Genus created!</body></html>');
@@ -44,7 +44,9 @@ class GenusController extends Controller
     public function listAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $genuses = $em->getRepository('AppBundle:Genus')->findAllPublishedOrderedByRecentlyActive();
+
+        $genuses = $em->getRepository('AppBundle:Genus')
+            ->findAllPublishedOrderedByRecentlyActive();
 
         return $this->render('genus/list.html.twig', [
             'genuses' => $genuses
@@ -57,26 +59,28 @@ class GenusController extends Controller
     public function showAction($genusName)
     {
         $em = $this->getDoctrine()->getManager();
+
         $genus = $em->getRepository('AppBundle:Genus')
-            ->findOneBy(['name'=>$genusName]);
-        if(!$genus)
-        {
+            ->findOneBy(['name' => $genusName]);
+
+        if (!$genus) {
             throw $this->createNotFoundException('genus not found');
         }
-        else
-        {
-            $recentNotes = $em->getRepository('AppBundle:GenusNote')
-                ->findAllRecentNotesForGenus($genus);
-        }
 
-        $markdownParser = $this->get('app.markdown_transformer');
-        $funFact = $markdownParser->parse($genus->getFunFact());
+        $markdownTransformer = $this->get('app.markdown_transformer');
+        $funFact = $markdownTransformer->parse($genus->getFunFact());
 
-        return $this->render('genus/show.html.twig', [
+        $this->get('logger')
+            ->info('Showing genus: '.$genusName);
+
+        $recentNotes = $em->getRepository('AppBundle:GenusNote')
+            ->findAllRecentNotesForGenus($genus);
+
+        return $this->render('genus/show.html.twig', array(
             'genus' => $genus,
-            'recentNoteCount' => count($recentNotes),
-            'funFact' => $funFact
-        ]);
+            'funFact' => $funFact,
+            'recentNoteCount' => count($recentNotes)
+        ));
     }
 
     /**
@@ -87,8 +91,7 @@ class GenusController extends Controller
     {
         $notes = [];
 
-        foreach ($genus->getNotes() as $note)
-        {
+        foreach ($genus->getNotes() as $note) {
             $notes[] = [
                 'id' => $note->getId(),
                 'username' => $note->getUsername(),
