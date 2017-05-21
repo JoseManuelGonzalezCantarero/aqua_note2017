@@ -15,10 +15,6 @@ security:
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
-
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
-            #form_login: ~
+            guard:
+                authenticators:
+                    - app.security.login_form_authenticator
