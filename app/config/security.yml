@@ -4,6 +4,8 @@ security:
     encoders:
         AppBundle\Entity\User: bcrypt
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_MANAGE_GENUS]
     providers:
         our_users:
             entity: { class: AppBundle\Entity\User, property: email }
