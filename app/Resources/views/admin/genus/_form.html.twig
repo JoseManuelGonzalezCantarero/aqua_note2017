@@ -2,7 +2,14 @@
     {{ form_errors(genusForm) }}
 
     {{ form_row(genusForm.name) }}
-    {{ form_row(genusForm.subFamily) }}
+    {{ dump(genusForm.subFamily.vars) }}
+    {{ form_row(genusForm.subFamily, {
+        'label': 'Taxonomic Subfamily',
+        'attr': {
+            'class': 'foo',
+        },
+        'placeholder': 'Select a Subfamily'
+    }) }}
     {{ form_row(genusForm.speciesCount, {
         'label': 'Number of Species'
     }) }}
