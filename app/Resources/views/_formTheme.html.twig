@@ -3,10 +3,16 @@
     {% set showErrorIcon = (not compound or force_error|default(false)) and not valid %}
     <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}{{ showErrorIcon ? ' has-feedback' : '' }}">
         {{- form_label(form) -}}
-        {{- form_widget(form) -}}
+        {% if help|default %}
+            {# set the aria-describedby attribute #}
+            {%- set attr = attr|merge({'aria-describedby': 'help-block-'~id }) -%}
+        {% endif %}
+        {{- form_widget(form, {
+            'attr': attr
+        }) -}}
         {{- form_errors(form) -}}
         {% if help|default %}
-            <span class="help-block">{{ help }}</span>
+            <span class="help-block" id="help-block-{{ id }}">{{ help }}</span>
         {% endif %}
     </div>
 {%- endblock form_row %}
