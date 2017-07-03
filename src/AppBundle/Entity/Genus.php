@@ -35,7 +35,7 @@ class Genus
 
     /**
      * @Assert\NotBlank()
-     * @Assert\Range(min="0", minMessage="Negative species! Come on...")
+     * @Assert\Range(min=0, minMessage="Negative species! Come on...")
      * @ORM\Column(type="integer")
      */
     private $speciesCount;
@@ -62,15 +62,28 @@ class Genus
      */
     private $notes;
 
+
     /**
      * @ORM\Column(type="string", unique=true)
      * @Gedmo\Slug(fields={"name"})
      */
     private $slug;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="User")
+     * @ORM\JoinTable(name="genus_scientist")
+     */
+    private $genusScientists;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
+        $this->genusScientists = new ArrayCollection();
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getName()
@@ -126,6 +139,11 @@ class Genus
         $this->isPublished = $isPublished;
     }
 
+    public function getIsPublished()
+    {
+        return $this->isPublished;
+    }
+
     /**
      * @return ArrayCollection|GenusNote[]
      */
@@ -142,16 +160,6 @@ class Genus
     public function setFirstDiscoveredAt(\DateTime $firstDiscoveredAt = null)
     {
         $this->firstDiscoveredAt = $firstDiscoveredAt;
-    }
-
-    public function getisPublished()
-    {
-        return $this->isPublished;
-    }
-
-    public function getId()
-    {
-        return $this->id;
     }
 
     public function getSlug()
