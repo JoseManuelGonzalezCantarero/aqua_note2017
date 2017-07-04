@@ -25,6 +25,9 @@
                                 <a href="{{ path('user_show',{'id': genusScientist.id}) }}">
                                     {{ genusScientist.fullName }}
                                 </a>
+                                <a href="#" class="btn btn-link btn-xs pull-right js-remove-scientist-user">
+                                    <span class="fa fa-close"></span>
+                                </a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -49,5 +52,12 @@
           <NoteSection url={notesUrl} />,
           document.getElementById('js-notes-wrapper')
         );
+    </script>
+    <script>
+        jQuery(document).ready(function () {
+           $('.js-remove-scientist-user').on('click', function (e) {
+               e.preventDefault();
+           });
+        });
     </script>
 {% endblock %}
