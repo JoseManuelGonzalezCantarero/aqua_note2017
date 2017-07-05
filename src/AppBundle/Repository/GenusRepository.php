@@ -17,6 +17,8 @@ class GenusRepository extends EntityRepository
             ->andWhere('genus.isPublished = :isPublished')
             ->setParameter('isPublished', true)
             ->leftJoin('genus.notes', 'genus_note')
+            ->leftJoin('genus.genusScientists', 'genusScientist')
+            ->addSelect('genusScientist')
             ->orderBy('genus_note.createdAt', 'DESC')
             ->getQuery()
             ->execute();
